@@ -1,0 +1,11 @@
+entity: facilitator
+items:
+  facilitator{1..5}:
+    username: '{{internet.userName}}'
+    password: '{{random.word}}'
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+    surname: '{{name.title}}'
+    totem: '{{random.words(2)}}'
+    entryDate: "2018-08-10T00:00:00.000Z"
+    # inactiveDate: ''

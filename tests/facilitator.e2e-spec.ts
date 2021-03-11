@@ -8,7 +8,7 @@ beforeAll(async () => {
 	await seedDb();
 });
 
-describe('MessageController (e2e)', () => {
+describe('FacilitatorController (e2e)', () => {
 	let app: INestApplication;
 
 	beforeEach(async () => {
@@ -25,9 +25,9 @@ describe('MessageController (e2e)', () => {
 	});
 
 	it('/ (GET)', async () => {
-		const response = await request(app.getHttpServer()).get('/messages').expect('Content-Type', /json/).expect(200);
+		const response = await request(app.getHttpServer()).get('/facilitators').expect('Content-Type', /json/).expect(200);
 
 		expect(Array.isArray(response.body)).toBe(true);
-		expect(response.body.length).toBe(3);
+		expect(response.body.length).toBe(5);
 	});
 });

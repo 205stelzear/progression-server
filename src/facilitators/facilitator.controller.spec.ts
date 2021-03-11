@@ -1,20 +1,20 @@
 import { PrismaService } from '$/prisma.service';
 import { SocketModule } from '$/socket/socket.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MessageController } from './message.controller';
-import { MessageService } from './message.service';
+import { FacilitatorController } from './facilitator.controller';
+import { FacilitatorService } from './facilitator.service';
 
-describe('MessageController', () => {
-	let controller: MessageController;
+describe('FacilitatorController', () => {
+	let controller: FacilitatorController;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [SocketModule],
-			controllers: [MessageController],
-			providers: [PrismaService, MessageService],
+			controllers: [FacilitatorController],
+			providers: [PrismaService, FacilitatorService],
 		}).compile();
 
-		controller = module.get<MessageController>(MessageController);
+		controller = module.get<FacilitatorController>(FacilitatorController);
 	});
 
 	it('should be defined', () => {

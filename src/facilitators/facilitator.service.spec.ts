@@ -1,22 +1,21 @@
 import { PrismaService } from '$/prisma.service';
 import { SocketModule } from '$/socket/socket.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MessageGateway } from './message.gateway';
-import { MessageService } from './message.service';
+import { FacilitatorService } from './facilitator.service';
 
-describe('MessageGateway', () => {
-	let gateway: MessageGateway;
+describe('FacilitatorService', () => {
+	let service: FacilitatorService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [SocketModule],
-			providers: [MessageGateway, PrismaService, MessageService],
+			providers: [FacilitatorService, PrismaService],
 		}).compile();
 
-		gateway = module.get<MessageGateway>(MessageGateway);
+		service = module.get<FacilitatorService>(FacilitatorService);
 	});
 
 	it('should be defined', () => {
-		expect(gateway).toBeDefined();
+		expect(service).toBeDefined();
 	});
 });

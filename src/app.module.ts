@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppGateway } from './app.gateway';
-import { MessageModule } from './message/message.module';
+import { FacilitatorModule } from './facilitators/facilitator.module';
 import { SocketModule } from './socket/socket.module';
 
 @Module({
-	imports: [SocketModule, MessageModule],
+	imports: [SocketModule, FacilitatorModule],
 	controllers: [AppController],
 	providers: [AppGateway],
 })

@@ -1,0 +1,38 @@
+entity: facilitator
+items:
+  facilitator1:
+    username: 'gmarcoux'
+    password: 'test'
+    firstName: 'Guillaume'
+    lastName: 'Marcoux'
+    surname: 'Chil'
+    totem: 'Capucin Créatif'
+    entryDate: "2018-08-10T00:00:00.000Z"
+    # inactiveDate: ''
+  facilitator2:
+    username: 'dcummings'
+    password: 'test'
+    firstName: 'David'
+    lastName: 'Cummings'
+    surname: 'Baloo'
+    totem: ''
+    entryDate: "2007-08-10T00:00:00.000Z"
+    # inactiveDate: ''
+  facilitator3:
+    username: 'cdugas'
+    password: 'test'
+    firstName: 'Catherine'
+    lastName: 'Dugas'
+    surname: 'Akéla'
+    totem: ''
+    entryDate: "2008-08-10T00:00:00.000Z"
+    # inactiveDate: ''
+  facilitator4:
+    username: 'mjacques'
+    password: 'test'
+    firstName: 'Martin'
+    lastName: 'Jacques'
+    surname: 'Hathi'
+    totem: ''
+    entryDate: "2017-08-10T00:00:00.000Z"
+    # inactiveDate: ''
