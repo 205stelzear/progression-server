@@ -10,22 +10,225 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
-  firstName String?   @map("first_name")
-  lastName  String?   @map("last_name")
-  Message   Message[]
+model Facilitator {
+  id           Int         @id @default(autoincrement())
+  username     String      @unique
+  password     String
+  firstName    String      @map("first_name")
+  lastName     String?     @map("last_name")
+  surname      String?
+  totem        String?
+  entryDate    DateTime    @map("entry_date")
+  inactiveDate DateTime?   @map("inactive_date")
+  scoutYears   ScoutYear[]
 
-  @@map("users")
+  @@map("facilitators")
 }
 
-model Message {
-  id      Int      @id @default(autoincrement())
-  message String
-  time    DateTime @default(now())
-  user    User     @relation(fields: [userId], references: [id])
-  userId  Int
+model Pack {
+  id        Int       @id @default(autoincrement())
+  color     PackColor @relation(fields: [packColorId], references: [id])
+  scoutYear ScoutYear @relation(fields: [scoutYearId], references: [id])
+  cubs      Cub[]
 
-  @@map("messages")
+  packColorId Int
+  scoutYearId Int
+  @@map("packs")
+}
+
+model PackColor {
+  id    Int    @id @default(autoincrement())
+  color String
+  packs Pack[]
+
+  @@map("pack_colors")
+}
+
+model ScoutYear {
+  id           Int           @id @default(autoincrement())
+  startDate    DateTime
+  endDate      DateTime
+  packs        Pack[]
+  facilitators Facilitator[]
+  cubs         Cub[]
+
+  @@map("scout_years")
+}
+
+model Cub {
+  id            Int              @id @default(autoincrement())
+  username      String           @unique
+  password      String
+  firstName     String           @map("first_name")
+  lastName      String?          @map("last_name")
+  birthDate     DateTime         @map("birth_date")
+  clanBalooDate DateTime?        @map("clan_baloo_date")
+  promesseDate  DateTime?        @map("promesse_date")
+  joinDate      DateTime         @map("join_date")
+  quitDate      DateTime?        @map("quit_date")
+  scoutYears    ScoutYear[]
+  pack          Pack             @relation(fields: [packId], references: [id])
+  preys         Prey[]
+  hunts         Hunt[]
+  genericItems  CubGenericItem[]
+
+  packId Int
+  @@map("cubs")
+}
+
+model Prey {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  givenDate     DateTime? @map("given_date")
+  completedDate DateTime? @map("completed_date")
+  failed        Boolean   @default(false)
+  cub           Cub       @relation(fields: [cubId], references: [id])
+  preyType      PreyType  @relation(fields: [preyTypeId], references: [id])
+
+  cubId      Int
+  preyTypeId Int
+  @@map("preys")
+}
+
+model PreyType {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  Prey        Prey[]
+
+  @@map("prey_types")
+}
+
+model Hunt {
+  id            Int             @id @default(autoincrement())
+  givenDate     DateTime?       @map("given_date")
+  completedDate DateTime?       @map("completed_date")
+  failed        Boolean         @default(false)
+  description   HuntDescription @relation(fields: [huntDescriptionId], references: [id])
+  cub           Cub             @relation(fields: [cubId], references: [id])
+
+  huntDescriptionId Int
+  cubId             Int
+  @@map("hunts")
+}
+
+model HuntDescription {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  type        HuntType @relation(fields: [huntTypeId], references: [id])
+  hunts       Hunt[]
+
+  huntTypeId Int
+  @@map("hunt_descriptions")
+}
+
+model HuntType {
+  id               Int               @id @default(autoincrement())
+  name             String
+  huntDescriptions HuntDescription[]
+
+  @@map("hunt_types")
+}
+
+model CubBadge {
+  id               Int              @id @default(autoincrement())
+  givenDate        DateTime?        @map("given_date")
+  matDeMeuteDate   DateTime?        @map("mat_de_meute_date")
+  badgeDescription BadgeDescription @relation(fields: [badgeDescriptionId], references: [id])
+
+  badgeDescriptionId Int
+  @@map("cub_badges")
+}
+
+model BadgeDescription {
+  id               Int           @id @default(autoincrement())
+  progressRequired Int
+  territory        String
+  item             InventoryItem @relation(fields: [inventoryItemId], references: [id])
+  cubBadges        CubBadge[]
+
+  inventoryItemId Int
+  @@map("badge_descriptions")
+}
+
+model CubGenericItem {
+  id            Int           @id @default(autoincrement())
+  givenDate     DateTime?     @map("given_date")
+  completedDate DateTime?     @map("completed_date")
+  item          InventoryItem @relation(fields: [inventoryItemId], references: [id])
+  cub           Cub           @relation(fields: [cubId], references: [id])
+
+  inventoryItemId Int
+  cubId           Int
+  @@map("cub_generic_items")
+}
+
+model CubSuperCertificate {
+  id            Int                         @id @default(autoincrement())
+  givenDate     DateTime?                   @map("given_date")
+  completedDate DateTime?                   @map("completed_date")
+  failed        Boolean                     @default(false)
+  description   SuperCertificateDescription @relation(fields: [superCertificateDescriptionId], references: [id])
+
+  superCertificateDescriptionId Int
+  @@map("cub_super_certificates")
+}
+
+model SuperCertificateDescription {
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  description          String?
+  item                 InventoryItem         @relation(fields: [inventoryItemId], references: [id])
+  cubSuperCertificates CubSuperCertificate[]
+
+  inventoryItemId Int
+  @@map("super_certificate_descriptions")
+}
+
+model InventoryItem {
+  id                           Int                           @id @default(autoincrement())
+  name                         String
+  description                  String?
+  image                        Bytes?
+  quantity                     Int                           @default(0)
+  isUnique                     Boolean                       @default(true)
+  category                     ItemCategory                  @relation(fields: [itemCategoryId], references: [id])
+  badgeDescriptions            BadgeDescription[]
+  cubGenericItems              CubGenericItem[]
+  superCertificateDescriptions SuperCertificateDescription[]
+  inventoryLogs                InventoryLog[]
+
+  itemCategoryId Int
+  @@map("inventory_items")
+}
+
+model ItemCategory {
+  id             Int             @id @default(autoincrement())
+  name           String
+  description    String?
+  inventoryItems InventoryItem[]
+
+  @@map("item_categories")
+}
+
+model InventoryLog {
+  id       Int              @id @default(autoincrement())
+  quantity Int
+  date     DateTime         @default(now())
+  item     InventoryItem    @relation(fields: [inventoryItemId], references: [id])
+  type     InventoryLogType @relation(fields: [inventoryLogTypeId], references: [id])
+
+  inventoryItemId    Int
+  inventoryLogTypeId Int
+  @@map("inventory_logs")
+}
+
+model InventoryLogType {
+  id            Int            @id @default(autoincrement())
+  name          String
+  inventoryLogs InventoryLog[]
+
+  @@map("inventory_log_types")
 }
