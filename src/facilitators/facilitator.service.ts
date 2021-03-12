@@ -1,5 +1,4 @@
 import { PrismaService } from '$/prisma.service';
-import { SocketService } from '$/socket/socket.service';
 import { Facilitator } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
 import type { CreateFacilitatorDto } from './dto/create-facilitator.dto';
@@ -7,7 +6,7 @@ import { UpdateFacilitatorSurnameDto } from './dto/update-surname.dto';
 
 @Injectable()
 export class FacilitatorService {
-	constructor(private readonly prisma: PrismaService, private readonly socket: SocketService) {}
+	constructor(private readonly prisma: PrismaService) {}
 
 	async findAll(): Promise<Facilitator[]> {
 		return this.prisma.facilitator.findMany();
@@ -31,12 +30,7 @@ export class FacilitatorService {
 				entryDate,
 				inactiveDate,
 			},
-			// include: { user: true },
 		});
-
-		// const sendableMessage = { user: newMessage.user, message: newMessage.message };
-
-		// this.socket.server.emit('send_message', sendableMessage);
 
 		return newFacilitator;
 	}
