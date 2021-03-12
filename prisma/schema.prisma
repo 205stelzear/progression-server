@@ -46,8 +46,8 @@ model PackColor {
 
 model ScoutYear {
   id           Int           @id @default(autoincrement())
-  startDate    DateTime
-  endDate      DateTime
+  startDate    DateTime      @map("start_date")
+  endDate      DateTime      @map("end_date")
   packs        Pack[]
   facilitators Facilitator[]
   cubs         Cub[]
@@ -56,21 +56,21 @@ model ScoutYear {
 }
 
 model Cub {
-  id            Int              @id @default(autoincrement())
-  username      String           @unique
+  id            Int           @id @default(autoincrement())
+  username      String        @unique
   password      String
-  firstName     String           @map("first_name")
-  lastName      String?          @map("last_name")
-  birthDate     DateTime         @map("birth_date")
-  clanBalooDate DateTime?        @map("clan_baloo_date")
-  promesseDate  DateTime?        @map("promesse_date")
-  joinDate      DateTime         @map("join_date")
-  quitDate      DateTime?        @map("quit_date")
+  firstName     String        @map("first_name")
+  lastName      String?       @map("last_name")
+  birthDate     DateTime      @map("birth_date")
+  clanBalooDate DateTime?     @map("clan_baloo_date")
+  promesseDate  DateTime?     @map("promesse_date")
+  joinDate      DateTime      @map("join_date")
+  quitDate      DateTime?     @map("quit_date")
   scoutYears    ScoutYear[]
-  pack          Pack             @relation(fields: [packId], references: [id])
+  pack          Pack          @relation(fields: [packId], references: [id])
   preys         Prey[]
   hunts         Hunt[]
-  genericItems  CubGenericItem[]
+  genericItems  GenericItem[]
 
   packId Int
   @@map("cubs")
@@ -95,7 +95,7 @@ model PreyType {
   id          Int     @id @default(autoincrement())
   name        String
   description String?
-  Prey        Prey[]
+  preys       Prey[]
 
   @@map("prey_types")
 }
@@ -144,7 +144,7 @@ model CubBadge {
 
 model BadgeDescription {
   id               Int           @id @default(autoincrement())
-  progressRequired Int
+  progressRequired Int           @map("progress_required")
   territory        String
   item             InventoryItem @relation(fields: [inventoryItemId], references: [id])
   cubBadges        CubBadge[]
@@ -153,7 +153,7 @@ model BadgeDescription {
   @@map("badge_descriptions")
 }
 
-model CubGenericItem {
+model GenericItem {
   id            Int           @id @default(autoincrement())
   givenDate     DateTime?     @map("given_date")
   completedDate DateTime?     @map("completed_date")
@@ -162,10 +162,10 @@ model CubGenericItem {
 
   inventoryItemId Int
   cubId           Int
-  @@map("cub_generic_items")
+  @@map("generic_items")
 }
 
-model CubSuperCertificate {
+model SuperCertificate {
   id            Int                         @id @default(autoincrement())
   givenDate     DateTime?                   @map("given_date")
   completedDate DateTime?                   @map("completed_date")
@@ -173,15 +173,15 @@ model CubSuperCertificate {
   description   SuperCertificateDescription @relation(fields: [superCertificateDescriptionId], references: [id])
 
   superCertificateDescriptionId Int
-  @@map("cub_super_certificates")
+  @@map("super_certificates")
 }
 
 model SuperCertificateDescription {
-  id                   Int                   @id @default(autoincrement())
-  name                 String
-  description          String?
-  item                 InventoryItem         @relation(fields: [inventoryItemId], references: [id])
-  cubSuperCertificates CubSuperCertificate[]
+  id                Int                @id @default(autoincrement())
+  name              String
+  description       String?
+  item              InventoryItem      @relation(fields: [inventoryItemId], references: [id])
+  superCertificates SuperCertificate[]
 
   inventoryItemId Int
   @@map("super_certificate_descriptions")
@@ -196,7 +196,7 @@ model InventoryItem {
   isUnique                     Boolean                       @default(true)
   category                     ItemCategory                  @relation(fields: [itemCategoryId], references: [id])
   badgeDescriptions            BadgeDescription[]
-  cubGenericItems              CubGenericItem[]
+  genericItems                 GenericItem[]
   superCertificateDescriptions SuperCertificateDescription[]
   inventoryLogs                InventoryLog[]
 
