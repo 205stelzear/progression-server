@@ -41,7 +41,7 @@ model Pack {
 
 model PackColor {
   id    Int    @id @default(autoincrement())
-  color String
+  name  String
   packs Pack[]
 
   @@map("pack_colors")
