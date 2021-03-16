@@ -21,18 +21,21 @@ model Facilitator {
   entryDate    DateTime    @map("entry_date")
   inactiveDate DateTime?   @map("inactive_date")
   scoutYears   ScoutYear[]
+  packs        Pack[]
 
   @@map("facilitators")
 }
 
 model Pack {
-  id        Int       @id @default(autoincrement())
-  color     PackColor @relation(fields: [packColorId], references: [id])
-  scoutYear ScoutYear @relation(fields: [scoutYearId], references: [id])
-  cubs      Cub[]
+  id          Int         @id @default(autoincrement())
+  color       PackColor   @relation(fields: [packColorId], references: [id])
+  scoutYear   ScoutYear   @relation(fields: [scoutYearId], references: [id])
+  facilitator Facilitator @relation(fields: [facilitatorId], references: [id])
+  cubs        Cub[]
 
-  packColorId Int
-  scoutYearId Int
+  packColorId   Int
+  scoutYearId   Int
+  facilitatorId Int
   @@map("packs")
 }
 
